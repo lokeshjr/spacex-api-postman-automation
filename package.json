@@ -1,0 +1,16 @@
+{
+  "name": "spacex",
+  "version": "1.0.0",
+  "description": "spacex_api_automation",
+  "main": "index.js",
+  "scripts": {
+    "newman-run": "newman run ./collections/SpaceX-API-Automation.postman_collection.json",
+    "htmlreport": "newman run ./collections/SpaceX-API-Automation.postman_collection.json -r htmlextra"
+  },
+  "author": "Lokesh JR",
+  "license": "ISC",
+  "devDependencies": {
+    "newman": "^5.3.0",
+    "newman-reporter-htmlextra": "^1.22.3"
+  }
+}

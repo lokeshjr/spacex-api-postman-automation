@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "c2e907df-96ba-458e-bb5f-6459ca1237f6",
+		"name": "SpaceX-API-Automation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LatestLaunches",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const latestLaunchResponse = pm.response.json();",
+							"",
+							"",
+							"pm.test(\"Validate the headers,status code, response time, size of the body\",function(){",
+							"  ",
+							"  pm.expect(latestLaunchResponse).to.not.equal(null) // validates response is not null",
+							"  pm.response.to.have.header(\"Content-Type\");",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json; charset=utf-8\");",
+							"  pm.response.to.have.status(200); //compares status code",
+							"  pm.expect(pm.response.responseTime).to.be.below(1500); //time in milliseconds",
+							"  pm.expect(pm.response.size().total).to.be.below(1900); //size in bytes",
+							"",
+							"})",
+							"",
+							"pm.test(\"Validate the json schema of the request\", function(){",
+							"",
+							"  pm.response.to.have.jsonSchema(JSON.parse(pm.collectionVariables.get(\"latest_launches_schema\"))); //validates json schema",
+							"",
+							"})",
+							"",
+							"pm.test(\"Validate the response body of the request\",function(){",
+							"",
+							"  unixTimeStamp = pm.collectionVariables.get(\"unixTimeStamp\"); //collection variable ",
+							"  pm.expect(latestLaunchResponse).to.haveOwnProperty(\"fairings\").haveOwnProperty(\"ships\"); //property validations",
+							"  pm.expect(JSON.stringify(latestLaunchResponse[\"date_unix\"])).to.includes(unixTimeStamp.slice(0,3)) //timestamp validation from pre-request script comparison",
+							"  pm.expect(latestLaunchResponse).to.haveOwnProperty(\"links\").haveOwnProperty(\"reddit\").haveOwnProperty(\"media\").to.be.null; //null value check",
+							"  pm.expect(latestLaunchResponse.date_precision).to.equal(pm.collectionVariables.get(\"date_precision\"));",
+							"  pm.expect(latestLaunchResponse.failures).to.be.empty;",
+							"  pm.expect(latestLaunchResponse.ships).to.be.empty; //empty array check",
+							"  const cores = latestLaunchResponse.cores.find",
+							"      (coreType => coreType.reused === true); //finding reused = true with in array",
+							"  pm.expect(cores.legs).to.eql(true);",
+							"  pm.expect(cores.landing_attempt).to.eql(true);",
+							"  pm.expect(cores.landing_success).to.eql(true);",
+							"  pm.expect(latestLaunchResponse[\"success\"]).to.eql(true);",
+							"  pm.expect(latestLaunchResponse[\"auto_update\"]).to.eql(true);",
+							"",
+							"",
+							"})",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const unixTimeStamp = pm.variables.replaceIn('{{$timestamp}}'); //get current timestamp",
+							"pm.collectionVariables.set(\"unixTimeStamp\",unixTimeStamp); //set timestamp as collection variable"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v4/launches/latest",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v4",
+						"launches",
+						"latest"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://api.spacexdata.com"
+		},
+		{
+			"key": "latest_launches_schema",
+			"value": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"fairings\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"reused\": {\n          \"type\": \"null\"\n        },\n        \"recovery_attempt\": {\n          \"type\": \"null\"\n        },\n        \"recovered\": {\n          \"type\": \"null\"\n        },\n        \"ships\": {\n          \"type\": \"array\",\n          \"items\": {}\n        }\n      },\n      \"required\": [\n        \"reused\",\n        \"recovery_attempt\",\n        \"recovered\",\n        \"ships\"\n      ]\n    },\n    \"links\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"patch\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"small\": {\n              \"type\": \"null\"\n            },\n            \"large\": {\n              \"type\": \"null\"\n            }\n          },\n          \"required\": [\n            \"small\",\n            \"large\"\n          ]\n        },\n        \"reddit\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"campaign\": {\n              \"type\": \"string\"\n            },\n            \"launch\": {\n              \"type\": \"null\"\n            },\n            \"media\": {\n              \"type\": \"null\"\n            },\n            \"recovery\": {\n              \"type\": \"null\"\n            }\n          },\n          \"required\": [\n            \"campaign\",\n            \"launch\",\n            \"media\",\n            \"recovery\"\n          ]\n        },\n        \"flickr\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"small\": {\n              \"type\": \"array\",\n              \"items\": {}\n            },\n            \"original\": {\n              \"type\": \"array\",\n              \"items\": {}\n            }\n          },\n          \"required\": [\n            \"small\",\n            \"original\"\n          ]\n        },\n        \"presskit\": {\n          \"type\": \"null\"\n        },\n        \"webcast\": {\n          \"type\": \"string\"\n        },\n        \"youtube_id\": {\n          \"type\": \"string\"\n        },\n        \"article\": {\n          \"type\": \"null\"\n        },\n        \"wikipedia\": {\n          \"type\": \"string\"\n        }\n      },\n      \"required\": [\n        \"patch\",\n        \"reddit\",\n        \"flickr\",\n        \"presskit\",\n        \"webcast\",\n        \"youtube_id\",\n        \"article\",\n        \"wikipedia\"\n      ]\n    },\n    \"static_fire_date_utc\": {\n      \"type\": \"null\"\n    },\n    \"static_fire_date_unix\": {\n      \"type\": \"null\"\n    },\n    \"net\": {\n      \"type\": \"boolean\"\n    },\n    \"window\": {\n      \"type\": \"null\"\n    },\n    \"rocket\": {\n      \"type\": \"string\"\n    },\n    \"success\": {\n      \"type\": \"boolean\"\n    },\n    \"failures\": {\n      \"type\": \"array\",\n      \"items\": {}\n    },\n    \"details\": {\n      \"type\": \"null\"\n    },\n    \"crew\": {\n      \"type\": \"array\",\n      \"items\": {}\n    },\n    \"ships\": {\n      \"type\": \"array\",\n      \"items\": {}\n    },\n    \"capsules\": {\n      \"type\": \"array\",\n      \"items\": {}\n    },\n    \"payloads\": {\n      \"type\": \"array\",\n      \"items\": [\n        {\n          \"type\": \"string\"\n        }\n      ]\n    },\n    \"launchpad\": {\n      \"type\": \"string\"\n    },\n    \"flight_number\": {\n      \"type\": \"integer\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"date_utc\": {\n      \"type\": \"string\"\n    },\n    \"date_unix\": {\n      \"type\": \"integer\"\n    },\n    \"date_local\": {\n      \"type\": \"string\"\n    },\n    \"date_precision\": {\n      \"type\": \"string\"\n    },\n    \"upcoming\": {\n      \"type\": \"boolean\"\n    },\n    \"cores\": {\n      \"type\": \"array\",\n      \"items\": [\n        {\n          \"type\": \"object\",\n          \"properties\": {\n            \"core\": {\n              \"type\": \"string\"\n            },\n            \"flight\": {\n              \"type\": \"integer\"\n            },\n            \"gridfins\": {\n              \"type\": \"boolean\"\n            },\n            \"legs\": {\n              \"type\": \"boolean\"\n            },\n            \"reused\": {\n              \"type\": \"boolean\"\n            },\n            \"landing_attempt\": {\n              \"type\": \"boolean\"\n            },\n            \"landing_success\": {\n              \"type\": \"boolean\"\n            },\n            \"landing_type\": {\n              \"type\": \"string\"\n            },\n            \"landpad\": {\n              \"type\": \"string\"\n            }\n          },\n          \"required\": [\n            \"core\",\n            \"flight\",\n            \"gridfins\",\n            \"legs\",\n            \"reused\",\n            \"landing_attempt\",\n            \"landing_success\",\n            \"landing_type\",\n            \"landpad\"\n          ]\n        }\n      ]\n    },\n    \"auto_update\": {\n      \"type\": \"boolean\"\n    },\n    \"tbd\": {\n      \"type\": \"boolean\"\n    },\n    \"launch_library_id\": {\n      \"type\": \"string\"\n    },\n    \"id\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"fairings\",\n    \"links\",\n    \"static_fire_date_utc\",\n    \"static_fire_date_unix\",\n    \"net\",\n    \"window\",\n    \"rocket\",\n    \"success\",\n    \"failures\",\n    \"details\",\n    \"crew\",\n    \"ships\",\n    \"capsules\",\n    \"payloads\",\n    \"launchpad\",\n    \"flight_number\",\n    \"name\",\n    \"date_utc\",\n    \"date_unix\",\n    \"date_local\",\n    \"date_precision\",\n    \"upcoming\",\n    \"cores\",\n    \"auto_update\",\n    \"tbd\",\n    \"launch_library_id\",\n    \"id\"\n  ]\n}"
+		},
+		{
+			"key": "unixTimeStamp",
+			"value": ""
+		},
+		{
+			"key": "date_precision",
+			"value": "hour"
+		}
+	]
+}
