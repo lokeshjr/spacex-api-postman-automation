@@ -1,5 +1,5 @@
 # spacex-api-postman-automation
-spacex api postman automation
+spacex api automation using postman tool and javascript
 # Framework overview: 
 API automation using postman - javascript. We can run the collection using newman CLI. Generates a nice html report for the tests
 
