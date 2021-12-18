@@ -2,7 +2,6 @@
   "name": "spacex_api",
   "version": "1.0.0",
   "description": "spacex_api_automation",
-  "main": "index.js",
   "scripts": {
     "newman-run": "newman run ./collections/SpaceX-API-Automation.postman_collection.json",
     "newmanHtmlReport": "newman run ./collections/SpaceX-API-Automation.postman_collection.json -r htmlextra"
