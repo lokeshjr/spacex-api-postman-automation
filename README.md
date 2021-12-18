@@ -30,7 +30,7 @@ used newman-reporter-htmlextra for nice html reports
 
 To serve the report. Please run the below command.
 
-`npm run htmlreport`
+`npm run newmanHtmlReport`
 
 # Import Collection to Postman tool or App
 
