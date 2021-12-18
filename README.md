@@ -21,6 +21,7 @@ First you would need to install the node packages/ dependencies in the package.j
 `npm install`
 
 Then, open a new gitbash shell/terminal and type in below commands to run the tests-
+
 `npm run newman-run`
 
     
