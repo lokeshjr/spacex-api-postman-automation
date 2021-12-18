@@ -5,10 +5,14 @@
   "main": "index.js",
   "scripts": {
     "newman-run": "newman run ./collections/SpaceX-API-Automation.postman_collection.json",
-    "htmlreport": "newman run ./collections/SpaceX-API-Automation.postman_collection.json -r htmlextra"
+    "newmanHtmlReport": "newman run ./collections/SpaceX-API-Automation.postman_collection.json -r htmlextra"
   },
   "author": "Lokesh JR",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lokeshjr/spacex-api-postman-automation"
+  },
   "devDependencies": {
     "newman": "^5.3.0",
     "newman-reporter-htmlextra": "^1.22.3"
