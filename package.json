@@ -1,5 +1,5 @@
 {
-  "name": "spacex",
+  "name": "spacex_api",
   "version": "1.0.0",
   "description": "spacex_api_automation",
   "main": "index.js",
