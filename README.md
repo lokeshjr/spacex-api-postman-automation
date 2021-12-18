@@ -15,7 +15,7 @@ API automation using postman - javascript. We can run the collection using newma
 
 # Running the tests locally from newman CLI - 
 
-First you would need to install the node packages/ dependencies in the package.json file.
+First you would need to install the node packages/ dependencies in the package.json file.  
 
 `npm install`
 
@@ -32,6 +32,6 @@ To serve the report. Please run the below command.
 
 `npm run htmlreport`
 
-#Import Collection to Postman
+# Import Collection to Postman tool or App
 
 From the folder import collection.json file and run the collection.
